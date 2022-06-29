@@ -1,0 +1,31 @@
+input:
+  counts:
+    "/projectnb/bradham/data/RNASeq/processed/ethanol-2020-11-20/matrix/count_matrix.csv"
+  samples:
+    "/projectnb/bradham/data/RNASeq/processed/ethanol-2020-11-20/samples.csv"
+  annotations:
+    "/projectnb/bradham/data/ReferenceSequences/wray-genome/annotations/master_top_hits.txt"
+  go:
+    genesets:
+      "/projectnb/bradham/data/ReferenceSequences/wray-genome/annotations/go_gene_list.json"
+    lookup:
+      "/projectnb/bradham/data/ReferenceSequences/wray-genome/annotations/go_lookup_table.csv"
+  kegg:
+    genesets:
+      "/projectnb2/bradham/data/ReferenceSequences/wray-genome/annotations/kegg_orthologue_gene_sets.json"
+    lookup:
+      "/projectnb/bradham/data/ReferenceSequences/wray-genome/annotations/kegg_orthologue_desc.csv"
+workdir:
+    "/projectnb/bradham/data/RNASeq/processed/ethanol-2020-11-20"
+comparisons:
+  Group: [["Control-15", "Ethanol-15"],
+          ["Control-15", "Ethanol-18"],
+          ["Control-18", "Ethanol-18"],
+          ["Control-18", "Ethanol-15"],
+          ["Control-18", "Ethanol-21"],
+          ["Control-21", "Ethanol-18"],
+          ["Control-21", "Ethanol-21"],
+          ["Ethanol-21", "Control-18"]]
+params:
+  annotations:
+    name_columns: ['SPU.common_name', 'SPU.hit', 'uniprot.name', 'uniprot.hit', 'refseq.hit']

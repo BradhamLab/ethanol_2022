@@ -3,7 +3,9 @@ import numpy as np
 
 import os
 
-
+# lol, if only you used ruby you would have access to the object method .nil? but here you have to do backflips because
+# python is less of a programming language and more of a logic gate creator. Like one step above a transistor bro
+# python get owned 💥
 def is_null(val):
     if isinstance(val, str) and val.lower() in ["none", "na", ""]:
         return True

@@ -1,0 +1,15 @@
+GO:0009636	response to toxic substance
+GO:0098754	detoxification
+GO:0097237	cellular response to toxic substance
+GO:0006974	cellular response to DNA damage stimulus
+GO:0006281	DNA repair
+GO:0009432	SOS response
+GO:0006986	response to unfolded protein
+GO:0030968	endoplasmic reticulum unfolded protein response
+GO:0034599	cellular response to oxidative stress
+GO:1900407	regulation of cellular response to oxidative stress
+GO:1901998	toxin transport
+GO:0012501	programmed cell death
+GO:0070265	necrotic cell death
+GO:0036473	cell death in response to oxidative stress
+GO:0010942	positive regulation of cell death

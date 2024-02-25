@@ -80,7 +80,8 @@ if (exists("snakemake")) {
     geom_point(size = 4) +
     scale_color_manual(values = colors) +
     xlab(paste("PC1: ", round(variance[1], 2) * 100, "% variance")) +
-    ylab(paste("PC2: ", round(variance[2], 2) * 100, "% variance"))
+    ylab(paste("PC2: ", round(variance[2], 2) * 100, "% variance")) + 
+    theme_black()
   ggsave(snakemake@output$pca, width = 4.25, height = 3, units = "in")
 
   # calculate distance off of PCA

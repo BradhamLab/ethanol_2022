@@ -60,16 +60,16 @@ theme_black = function(base_size = 12, base_family = "") {
 volcano_plot <- function(res, fc_threshold=1, p_threshold=0.05,
                          title="", dark=TRUE) {
     
-    res <- as.data.frame(res) %>%
-        dplyr::mutate(
-            Significant = dplyr::case_when(
-                !is.na(padj) & padj < p_threshold & log2FoldChange > fc_threshold ~ "+",
-                !is.na(padj) & padj < p_threshold & log2FoldChange < -fc_threshold ~ '-',
-                TRUE ~ "n.s."
-            ),
-            log10p = -log10(pvalue),
-            Significant = factor(Significant, levels=c("+", "-", "n.s."))
-        )
+    # res <- as.data.frame(res) %>%
+    #     dplyr::mutate(
+    #         Significant = dplyr::case_when(
+    #             !is.na(padj) & padj < p_threshold & log2FoldChange > fc_threshold ~ "+",
+    #             !is.na(padj) & padj < p_threshold & log2FoldChange < -fc_threshold ~ '-',
+    #             TRUE ~ "n.s."
+    #         ),
+    #         log10p = -log10(pvalue),
+    #         Significant = factor(Significant, levels=c("+", "-", "n.s."))
+    #     )
 
     y_height <- min(res$log10p[res$Significant], na.rm=TRUE)
     xticks1 <- seq(0, max(ceiling(res$log2FoldChange), na.rm=TRUE), 2)
@@ -146,7 +146,7 @@ get_vsd_and_plot <- function(dds, plotdir, group) {
 }
 
 
-treatment_de <- function(counts, coldata, comparison_col, reference, experimental, name, plotdir, batch='Batch') {
+treatment_de <- function(counts, coldata, comparison_col, reference, experimental, name, plotdir, batch='Batch', p_threshold=0.05, fc_threshold=1) {
     if (!dir.exists(plotdir)) {
         dir.create(plotdir)
     }
@@ -164,11 +164,14 @@ treatment_de <- function(counts, coldata, comparison_col, reference, experimenta
     dds <- DESeq(dds)
     print("PLATDOAIDFAD")
     print(plotdir)
+    saveRDS(dds, 'deseq_dds.RDS')
     deseq_results <- lapply(experimental, function(condition) {
         condition_results <- results(dds, contrast=c(comparison_col, condition, reference))
+        condition_results <- data.frame(condition_results)
+        condition_results$Gene <- row.names(condition_results)
         condition_results$Comparision <- paste0(reference, "_vs_", condition)
 
-        condition_results <- as.data.frame(condition_results) %>%
+        condition_results <- condition_results %>%
             dplyr::mutate(
                 Significant = dplyr::case_when(
                     !is.na(padj) & padj < p_threshold & log2FoldChange > fc_threshold ~ "+",
@@ -187,14 +190,14 @@ treatment_de <- function(counts, coldata, comparison_col, reference, experimenta
             width=9, height=7, dpi='retina'
         )
         
-        return(list(condition_results))
+        return(condition_results)
     })
     vsd <- get_vsd_and_plot(
         dds,
         plotdir,
         comparison_col
     )
-    return(list('normalized' = vsd, 'results'=do.call(rbind, deseq_results)))
+    return(list('normalized' = vsd, 'results'=dplyr::bind_rows(deseq_results)))
 }
 
 main <- function(counts, coldata, comparisons, outdir,

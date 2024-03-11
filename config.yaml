@@ -1,8 +1,8 @@
 input:
   counts:
-    "/projectnb/bradham/data/RNASeq/processed/ethanol-2020-11-20/matrix/count_matrix.csv"
+    "/projectnb/bradham/data/RNASeq/processed/grn_and_pfas-2024-02-04/matrix/count_matrix.csv"
   samples:
-    "/projectnb/bradham/data/RNASeq/processed/ethanol-2020-11-20/samples.csv"
+    "/projectnb/bradham/data/RNASeq/processed/grn_and_pfas-2024-02-04/grn_pfas_samples.csv"
   annotations:
     "/projectnb/bradham/data/ReferenceSequences/wray-genome/annotations/master_top_hits.txt"
   go:
@@ -16,16 +16,42 @@ input:
     lookup:
       "/projectnb/bradham/data/ReferenceSequences/wray-genome/annotations/kegg_orthologue_desc.csv"
 workdir:
-    "/projectnb/bradham/data/RNASeq/processed/ethanol-2020-11-20"
+    "/projectnb/bradham/data/RNASeq/processed/grn_and_pfas-2024-02-04"
 comparisons:
-  Group: [["Control-15", "Ethanol-15"],
-          ["Control-15", "Ethanol-18"],
-          ["Control-18", "Ethanol-18"],
-          ["Control-18", "Ethanol-15"],
-          ["Control-18", "Ethanol-21"],
-          ["Control-21", "Ethanol-18"],
-          ["Control-21", "Ethanol-21"],
-          ["Ethanol-21", "Control-18"]]
+  {
+    GRN_knockdowns: {
+      reference: 'Control-18',
+      experimental: ["Alx4-18", "Ctcf-18", "Erg-18", "Foxb-18", "Mad-18", "Nk7-18", "RandomizedMO-18", "Smadip-18", "Tbr-18"],
+      column: "Group"
+    },
+    TimeMatched_13: {
+      reference: "Control-13",
+      experimental: ["Pfoa-13", "Genx-13"],
+      column: "Group"
+    },
+    TimeMatched_18: {
+      reference: "Control-18",
+      experimental: ['Pfoa-18', 'Genx-18'],
+      column: "Group"
+    },
+    TimeMatched_24: {
+      reference: "Control-24",
+      experimental: ["Pfoa-24", "Genx-24"],
+      column: "Group"
+    },
+    PhaseMatched_Early: {
+      reference: "Control-13",
+      experimental: ["Pfoa-18", "Genx-18"],
+      column: "Group"
+    },
+    PhaseMatched_Late: {
+      reference: "Control-18",
+      experimental: ['Pfoa-24', 'Genx-24'],
+      column: "Group"
+    }
+  }
 params:
   annotations:
     name_columns: ['SPU.common_name', 'SPU.hit', 'uniprot.name', 'uniprot.hit', 'refseq.hit']
+  deseq2:
+    batch: null 
